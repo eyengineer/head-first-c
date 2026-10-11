@@ -55,7 +55,10 @@ int main()
     // Read the user's input safely using fgets (prevents buffer overflow)
     // It reads up to 80 characters from standard input (keyboard)
     fgets(search_for, 80, stdin);
-
+    
+    // Remove the newline character (\n) from the input
+    // This is necessary because fgets keeps the Enter key press
+    search_for[strcspn(search_for, "\n")] = '\0';
     // Call the find_track function, passing the user's search term
     find_track(search_for);
 
