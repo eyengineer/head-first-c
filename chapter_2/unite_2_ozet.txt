@@ -1,0 +1,110 @@
+🧠 2. Ünite: Bellek ve İşaretçiler (Memory and Pointers)
+
+Bu ünite, C'nin en kritik konusu olan bellek yönetimi ve pointer'ları öğretir. İşte ana başlıklar:
+1. 📦 Bellek Bölgeleri (Stack vs Globals)
+
+    Stack: Fonksiyon içinde tanımlanan değişkenler burada yaşar. Fonksiyon bitince otomatik silinir.
+
+    Globals: Fonksiyonların dışında tanımlanan değişkenler burada yaşar. Program boyunca hayatta kalır.
+
+    Constants: String sabitleri (char *s = "Merhaba") burada yaşar. Salt okunurdur, değiştirilemez.
+
+    Heap: Dinamik bellek (malloc) burada yaşar. Sen yönetirsin.
+
+Örnek:
+c
+
+int y = 1;          // Globals
+int main() {
+    int x = 4;      // Stack
+    char *s = "Hi"; // "Hi" Constants'ta, s Stack'te
+}
+
+2. 📍 Adres Operatörü (&) ve Pointer (*)
+
+    &x: x'in bellekteki adresini verir.
+
+    *ptr: ptr'nin gösterdiği adresteki değeri verir.
+
+    %p: Adresleri hexadecimal formatta yazdırır.
+
+Örnek:
+c
+
+int x = 4;
+printf("x is at %p\n", &x);  // Adres
+printf("x is %i\n", x);       // Değer
+
+3. 📏 sizeof Farkı: Dizi vs Pointer
+
+    Dizi (char s[15]): sizeof(s) → Dizinin toplam boyutu (15 byte).
+
+    Pointer (char *t): sizeof(t) → Pointer'ın boyutu (4 veya 8 byte).
+
+Neden? Çünkü dizi boyutunu bilir, pointer sadece adres tutar.
+4. 🔄 Array Decay (Dizinin Pointer'a Dönüşmesi)
+
+    Bir dizi, fonksiyona gönderildiğinde otomatik olarak pointer'a dönüşür (decay).
+
+    Yani void func(char arr[]) ile void func(char *arr) birebir aynıdır.
+
+    Sonuç: Fonksiyon içinde sizeof(arr) pointer boyutunu verir, dizinin boyutunu değil.
+
+5. ➕ Pointer Aritmetiği
+
+    pointer + 1 → Bellekte 1 byte değil, o türün boyutu kadar ilerler.
+
+    int *p → p + 1 = 4 byte ileri.
+
+    char *p → p + 1 = 1 byte ileri.
+
+    dizi[i] = *(dizi + i) → İkisi de aynı şeydir.
+
+6. 📝 String'ler ve Bellek
+
+    char *s = "Merhaba"; → Constants (salt okunur). Değiştirilemez.
+
+    char s[] = "Merhaba"; → Stack/Globals. Değiştirilebilir.
+
+    strlen(s) → String uzunluğu (\0 hariç).
+
+    strstr(s, aranan) → String içinde arama yapar.
+
+7. 🎯 Pointer ile Fonksiyona Değer Gönderme
+
+    Değer ile (Pass by Value): Fonksiyona kopya gider. Orijinal değişmez.
+
+    Adres ile (Pass by Reference): Fonksiyona adres gider. Orijinal değişir.
+
+Örnek:
+c
+
+void go_south_east(int *lat, int *lon) {
+    *lat = *lat - 1;  // Orijinali değiştirir
+    *lon = *lon + 1;
+}
+int main() {
+    int latitude = 32;
+    go_south_east(&latitude, &longitude);  // Adres gönder
+}
+
+8. 🔍 scanf vs fgets
+
+    scanf("%s"): Boşluğa kadar okur, tehlikeli (buffer overflow riski).
+
+    fgets(dizi, boyut, stdin): Tüm satırı okur, güvenli (boyut sınırı var).
+
+    Altın Kural: fgets kullan, gets'ten uzak dur!
+
+9. 🃏 Pointer ve Dizi Aynı Belleği Paylaşır
+c
+
+char masked_raider[] = "Alive";
+char *jimmy = masked_raider;  // Aynı adresi gösterir
+masked_raider[0] = 'D';       // Değişiklik ikisini de etkiler
+// Artık ikisi de "Dead!" gösterir
+
+Neden? Çünkü pointer, dizinin kopyasını değil, adresini tutar.
+🎯 2. Ünitenin Ana Mesajı:
+
+"C'de her şey bir adrestir. Diziler, pointer'lar ve string'ler aynı bellek dünyasının farklı yüzleridir. Bu dünyayı anlarsan, sistemin nasıl çalıştığını anlarsın."
