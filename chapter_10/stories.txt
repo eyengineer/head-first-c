@@ -1,0 +1,1 @@
+Error fetching http://www.cnn.com/rss/celebs.xml: HTTP Error 404: OK
